@@ -1,0 +1,114 @@
+<!-- HTML Structure for a product list with pagination using Bootstrap -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Cards with Pagination</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+</head>
+<body>
+
+<div class="container py-5">
+  <div class="row g-4" id="product-list">
+      <!-- Product list container -->
+  </div>
+</div> 
+
+  <!-- Pagination controls -->
+  <nav>
+    <ul class="pagination justify-content-center mt-4" id="pagination"></ul>
+  </nav>
+    <!-- Pagination controls -->
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // Step 1: Product data array
+  var data = [
+    { "id": 1, "name": "Product1", "price": 2000, "image": "Images/product-14.jpg" },
+    { "id": 2, "name": "product2", "price": 2500, "image": "Images/product-02.jpg" },
+    { "id": 3, "name": "product3", "price": 3500, "image": "Images/product-03.jpg" },
+    { "id": 4, "name": "product4", "price": 4500, "image": "Images/product-04.jpg" },
+    { "id": 5, "name": "product5", "price": 5500, "image": "Images/product-05.jpg" },
+    { "id": 6, "name": "product6", "price": 6500, "image": "Images/product-06.jpg" },
+    { "id": 7, "name": "product7", "price": 7500, "image": "Images/product-07.jpg" },
+    { "id": 8, "name": "product8", "price": 8500, "image": "Images/product-08.jpg" },
+    { "id": 9, "name": "product9", "price": 9500, "image": "Images/product-09.jpg" },
+    { "id": 10, "name": "product9", "price": 9500, "image": "Images/product-10.jpg" },
+    { "id": 11, "name": "product9", "price": 9500, "image": "Images/product-11.jpg" },
+    { "id": 12, "name": "product9", "price": 9500, "image": "Images/product-12.jpg" },
+    { "id": 13, "name": "product9", "price": 9500, "image": "Images/product-13.jpg" },
+    { "id": 14, "name": "product9", "price": 9500, "image": "Images/product-14.jpg" },
+    // Add more objects here
+  ];
+
+
+
+  // Step 2: Initialize current page and items per page
+  var currentPage = 1;
+  var itemsPerPage = 6;
+
+  // Step 3: Function to render products for the current page
+  function renderProducts(page) {
+    $('#product-list').empty(); // Clear existing cards
+
+    // Calculate start and end index for slicing the data
+    var start = (page - 1) * itemsPerPage;
+    var end = start + itemsPerPage;
+
+    // Get only the items for the current page
+    var paginatedItems = data.slice(start, end);
+
+    // Step 4: Loop through paginated items and create HTML for each
+    paginatedItems.forEach(function(item) {
+      var card = `
+        <div class="col-md-4">
+          <div class="card">
+            <img src="${item.image}" class="card-img-top" alt="${item.name}">
+            <div class="card-body">
+              <h5 class="card-title">${item.name}</h5>
+              <p class="card-text">Price: $${item.price}</p>
+            </div>
+          </div>
+        </div>
+      `;
+      $('#product-list').append(card); // Add card to the DOM
+    });
+
+    // Step 5: Call function to update pagination UI
+    renderPagination();
+  }
+
+  // Step 6: Function to render pagination controls
+  function renderPagination() {
+    
+    var totalPages = Math.ceil(data.length / itemsPerPage); // Calculate total pages
+    
+    $('#pagination').empty(); // Clear existing pagination
+
+    // Step 7: Create page buttons
+    for (let i = 1; i <= totalPages; i++) {
+      var li = `<li class="page-item">
+                  <a class="page-link" href="#">${i}</a>
+                </li>`;
+      $('#pagination').append(li); // Add each page button
+    }
+
+    // Step 8: Add click event to pagination buttons
+    $('.page-link').click(function(e) {
+      e.preventDefault(); // Prevent default link behavior
+      currentPage = parseInt($(this).text()); // Get clicked page number
+      renderProducts(currentPage); // Re-render products for selected page
+    });
+  }
+
+  // Step 9: Initial render when page loads
+  $(document).ready(function() {
+    renderProducts(currentPage); // Render first page of products
+  });
+</script>
+
+</body>
+</html>
